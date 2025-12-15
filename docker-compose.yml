@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  # 1. Contenedor de Aplicación (app)
+  app:
+    # EasyPanel construirá la imagen usando el Dockerfile en el mismo directorio (build: .)
+    build: .
+    # Requerido: variables de entorno para configuración de Django
+    environment:
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=db  # Importante: usa el nombre del servicio de BD
+      - DB_PORT=5432
+    # Requerido: volúmenes persistentes para la base de datos (y media/static si no se usa S3)
+    volumes:
+      - .:/usr/src/app  # Solo para desarrollo. En producción, solo el código estático.
+    depends_on:
+      - [cite_start]db  # Requerido: dependencias entre servicios [cite: 181]
+    [cite_start]restart: always # Requerido: restart policies [cite: 182]
+
+  # 2. Contenedor de Base de Datos (db)
+  db:
+    image: postgres:15-alpine # O mysql:8.0
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    volumes:
+      - [cite_start]postgres_data:/var/lib/postgresql/data/ # Requerido: volúmenes persistentes [cite: 179]
+    # La BD NO debe ser accesible desde Internet [cite: 210]
+    # No se mapea ningún puerto a la IP pública (solo es accesible por la red Docker interna)
+    restart: always
+
+# Requerido: volúmenes [cite: 179]
+volumes:
+  postgres_data:

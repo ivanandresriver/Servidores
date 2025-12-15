@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explorar Tours - TRAVELWEB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* === NAVEGACIÓN ===*/
+        .navegacion {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 80px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .menu-navegacion {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .controles-usuario {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .menu-navegacion a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .menu-navegacion a:hover,
+        .menu-navegacion a.activo {
+            opacity: 0.8;
+        }
+
+        .selector-idioma {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .selector-idioma:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .boton-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        .boton-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* === SECCIÓN HEADER === */
+        .seccion-header {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .seccion-header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .seccion-header p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === GALERÍA DE IMÁGENES === */
+        .galeria-mini {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .galeria-mini img {
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .galeria-mini img:hover {
+            transform: scale(1.05);
+        }
+
+        /* === SECCIÓN DE TOURS === */
+        .seccion-tours {
+            padding: 80px 80px;
+            background-color: #f8f9fa;
+        }
+
+        .contenedor-tours {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        /* === TARJETA DE TOUR === */
+        .tarjeta-tour {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .tarjeta-tour:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .imagen-tarjeta {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .contenido-tarjeta {
+            padding: 25px;
+        }
+
+        .nombre-tour {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .precio-tour {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        .detalles-reserva {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .fila-detalle {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .fila-detalle:last-child {
+            border-bottom: none;
+        }
+
+        .etiqueta-detalle {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .valor-detalle {
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .seccion-politicas {
+            margin: 20px 0;
+        }
+
+        .titulo-politicas {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .politica-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .politica-valor {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .nota-cancelacion {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 8px;
+            font-style: italic;
+        }
+
+        .boton-reservar {
+            width: 100%;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .boton-reservar:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .mensaje-cobro {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .total-pagar {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .navegacion {
+                padding: 20px 30px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .menu-navegacion {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .seccion-header {
+                padding: 60px 30px;
+            }
+
+            .seccion-header h1 {
+                font-size: 2rem;
+            }
+
+            .seccion-tours {
+                padding: 60px 30px;
+            }
+
+            .contenedor-tours {
+                grid-template-columns: 1fr;
+            }
+
+            .galeria-mini img {
+                width: 150px;
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <section class="seccion-header">
+        <!-- NAVEGACIÓN -->
+        <nav class="navegacion">
+            <div class="logo">TRAVELWEB</div>
+            <ul class="menu-navegacion">
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'explorar_toures' %}" class="activo">Toures</a></li>
+                <li><a href="{% url 'reservas' %}">Reservas</a></li>
+                <li><a href="{% url 'sobre_nosotros' %}">Sobre Nosotros</a></li>
+            </ul>
+            <div class="controles-usuario">
+                <a href="{% url 'logout' %}" class="boton-logout">Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <!-- Contenido Header -->
+        <div>
+            <h1>ENCUENTRA TU ACTIVIDAD DESEADA</h1>
+            <p>Cada experiencia vivida serán recuerdos inolvidables</p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN DE TOURS -->
+    <section class="seccion-tours">
+        <div class="contenedor-tours">
+            {% for tour in tours %}
+            <div class="tarjeta-tour">
+                <!-- Imagen del Tour -->
+                {% if tour.imagen_url %}
+                <img src="{{ tour.imagen_url }}" alt="{{ tour.nombre }}" class="imagen-tarjeta">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="{{ tour.nombre }}" class="imagen-tarjeta">
+                {% endif %}
+
+                <!-- Contenido de la Tarjeta -->
+                <div class="contenido-tarjeta">
+                    <div class="nombre-tour">{{ tour.nombre }}</div>
+                    <div class="precio-tour">{{ tour.precio|default:"4,500" }} COP</div>
+
+                    <!-- Detalles de Reserva -->
+                    <div class="detalles-reserva">
+                        <div class="fila-detalle">
+                            <span class="etiqueta-detalle">INICIO DE TOUR</span>
+                            <span class="valor-detalle">6/3/2023</span>
+                        </div>
+                        <div class="fila-detalle">
+                            <span class="etiqueta-detalle">FINAL DE TOUR</span>
+                            <span class="valor-detalle">28/3/2023</span>
+                        </div>
+                        <div class="fila-detalle">
+                            <span class="etiqueta-detalle">PERSONAS</span>
+                            <span class="valor-detalle">1 PERSONA</span>
+                        </div>
+                    </div>
+
+                    <!-- Políticas de Cancelación -->
+                    <div class="seccion-politicas">
+                        <div class="titulo-politicas">POLÍTICAS DE CANCELACIÓN</div>
+                        <div class="politica-item">
+                            <span>No reembolsable</span>
+                            <span class="politica-valor">COP 4,000 total</span>
+                        </div>
+                        <div class="politica-item">
+                            <span>Reintegrable</span>
+                            <span class="politica-valor">COP 4,500 total</span>
+                        </div>
+                        <div class="nota-cancelacion">
+                            CANCELACIÓN GRATUITA ANTES DEL 22 DE JUNIO
+                        </div>
+                    </div>
+
+                    <!-- Botón de Reservar -->
+                    <button class="boton-reservar">Reservar</button>
+                    <div class="mensaje-cobro">No se te cobrará todavía</div>
+
+                    <!-- Total antes de impuestos -->
+                    <div class="total-pagar">
+                        <span>Total antes de impuestos</span>
+                        <span>COP 10,000 total</span>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div style="text-align: center; color: #999; padding: 60px;">
+                No hay tours disponibles en este momento.
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+</body>
+
+</html>

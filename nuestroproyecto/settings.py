@@ -26,9 +26,7 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 ALLOWED_HOSTS = ['*']
 
 # CSRF Trusted Origins for Azure
-CSRF_TRUSTED_ORIGINS = [
-    os.getenv("DOMINIO", "https://proyecto-final-cpbjgwbgd8cgev6.eastus2-01.azurewebsites.net")
-]
+CSRF_TRUSTED_ORIGINS = [os.getenv("DOMINIO")]
 
 # Application definition
 INSTALLED_APPS = [

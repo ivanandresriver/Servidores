@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Reservas - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f5f7fa;
+        }
+
+        .contenedor {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .boton-volver {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .boton-volver:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .tabla-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #f8f9fa;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .estado {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .estado-pendiente {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .estado-confirmada {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .estado-cancelada {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .sin-reservas {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .sin-reservas h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="header">
+            <h1>📋 Gestión de Reservas</h1>
+            <a href="{% url 'dashboard' %}" class="boton-volver">← Volver al Dashboard</a>
+        </div>
+
+        <div class="tabla-container">
+            {% if reservas %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Tour</th>
+                        <th>Fecha Inicio</th>
+                        <th>Personas</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Estado</th>
+                        <th>Fecha Reserva</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reserva in reservas %}
+                    <tr>
+                        <td>#{{ reserva.id }}</td>
+                        <td><strong>{{ reserva.nombre_cliente }}</strong></td>
+                        <td>{{ reserva.tour.nombre }}</td>
+                        <td>{{ reserva.fecha_inicio }}</td>
+                        <td>{{ reserva.numero_personas }}</td>
+                        <td>{{ reserva.email_cliente }}</td>
+                        <td>{{ reserva.telefono_cliente }}</td>
+                        <td>
+                            <span class="estado estado-{{ reserva.estado }}">
+                                {{ reserva.get_estado_display }}
+                            </span>
+                        </td>
+                        <td>{{ reserva.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="sin-reservas">
+                <h3>No hay reservas registradas</h3>
+                <p>Las reservas aparecerán aquí cuando los usuarios hagan reservaciones</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+
+</html>

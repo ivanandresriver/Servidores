@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .models import Practica, Tour
+from .models import Practica, Tour, Reserva
 from .forms import LoginForm, RegistroForm, EditarUsuarioForm, TourForm
 from django.db.models import Q # Import Q for complex queries
 from django.core.mail import send_mail
@@ -76,9 +76,23 @@ def home_view(request):
     """
     Vista principal para usuarios normales (NO administradores).
     Verifica que el usuario esté logueado (sesión activa) antes de mostrar la página.
+    Muestra la página principal con tours organizados por categoría.
     """
-    if 'user_id' not in request.session: return redirect('login')
-    return render(request, "welcome.html", {'username': request.session.get('username')})
+    if 'user_id' not in request.session: 
+        return redirect('login')
+    
+    # Obtener tours por categoría
+    tours_lugares = Tour.objects.filter(categoria='lugar')
+    tours_ciudades = Tour.objects.filter(categoria='ciudad')
+    nombre_usuario = request.session.get('username')
+    
+    contexto = {
+        'tours_lugares': tours_lugares,
+        'tours_ciudades': tours_ciudades,
+        'nombre_usuario': nombre_usuario
+    }
+    
+    return render(request, "pagina_principal.html", contexto)
 
 def login_view(request):
     """
@@ -191,6 +205,7 @@ def dashboard(request):
     Panel de Control Principal (Dashboard) - Solo para Administradores.
     - Verifica que el usuario esté logueado y sea admin.
     - Obtiene estadísticas y listas (Toures, Personas recientes) para mostrar.
+    - Búsqueda de tours por nombre.
     """
     if 'user_id' not in request.session:
          return redirect('login')
@@ -203,14 +218,23 @@ def dashboard(request):
     except Practica.DoesNotExist:
          return redirect('login')
 
-    tours = Tour.objects.all()
+    # Get search query from GET parameters
+    search_query = request.GET.get('buscar', '')
+    
+    # Filter tours by name if search query exists
+    if search_query:
+        tours = Tour.objects.filter(nombre__icontains=search_query)
+    else:
+        tours = Tour.objects.all()
+    
     personas = Practica.objects.all().order_by('-id')[:5] # Last 5 users
     username = request.session.get('username')
     
     context = {
         'tours': tours,
         'personas': personas,
-        'username': username
+        'username': username,
+        'search_query': search_query,  # Pass search query to template
     }
     return render(request, "dashboard.html", context)
 
@@ -277,6 +301,12 @@ def eliminar_tour(request, pk):
 # --- User Management Views (Legacy/Admin) ---
 
 def user_register(request):
+    """
+    Vista de gestión de usuarios (Admin).
+    - Lista todos los usuarios registrados
+    - Permite eliminar usuarios
+    - Incluye funcionalidad de búsqueda por username, email o nombre
+    """
     if 'user_id' not in request.session: return redirect("login")
     if request.method == "POST":
         user_id = request.POST.get("user_id")
@@ -288,12 +318,25 @@ def user_register(request):
             messages.error(request, 'Usuario no encontrado')
         return redirect("user_register")
     
-    usuarios = Practica.objects.all().order_by('username')
+    # Obtener término de búsqueda
+    query = request.GET.get('q', '').strip()
+    
+    # Filtrar usuarios si hay búsqueda
+    if query:
+        usuarios = Practica.objects.filter(
+            Q(username__icontains=query) |
+            Q(email__icontains=query) |
+            Q(nombre__icontains=query)
+        ).order_by('username')
+    else:
+        usuarios = Practica.objects.all().order_by('username')
+    
     usuario_actual_id = request.session.get('user_id')
     return render(request, "UserRegister.html", {
         'usuarios': usuarios,
         'usuario_actual_id': usuario_actual_id,
-        'total_usuarios': usuarios.count()
+        'total_usuarios': usuarios.count(),
+        'query': query
     })
 
 def editar_usuario(request, user_id):
@@ -324,6 +367,7 @@ def tours_view(request):
     Vista pública/mixta para ver el listado de Tours.
     - Separa los tours en categorías (Ciudad, Lugar) para mostrarlos organizados.
     - Pasa la variable 'is_admin' para mostrar botones de edición solo a admins.
+    - Incluye funcionalidad de búsqueda por nombre o descripción
     """
     if 'user_id' not in request.session:
          return redirect('login')
@@ -336,15 +380,31 @@ def tours_view(request):
     except Practica.DoesNotExist:
         pass
 
-    tours_ciudades = Tour.objects.filter(categoria='ciudad')
-    tours_lugares = Tour.objects.filter(categoria='lugar')
+    # Obtener término de búsqueda
+    query = request.GET.get('q', '').strip()
+    
+    # Filtrar tours si hay búsqueda
+    if query:
+        tours_ciudades = Tour.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query),
+            categoria='ciudad'
+        )
+        tours_lugares = Tour.objects.filter(
+            Q(nombre__icontains=query) | Q(descripcion__icontains=query),
+            categoria='lugar'
+        )
+    else:
+        tours_ciudades = Tour.objects.filter(categoria='ciudad')
+        tours_lugares = Tour.objects.filter(categoria='lugar')
+    
     username = request.session.get('username')
     
     context = {
         'tours_ciudades': tours_ciudades,
         'tours_lugares': tours_lugares,
         'username': username,
-        'is_admin': is_admin
+        'is_admin': is_admin,
+        'query': query
     }
     return render(request, "tours.html", context)
 
@@ -392,3 +452,121 @@ def configuracion_view(request):
         return redirect('login')
         
     return render(request, "configuracion.html", {'username': usuario.username, 'usuario': usuario})
+
+def explorar_toures_view(request):
+    """
+    Vista de exploración de tours para usuarios.
+    Muestra todos los tours disponibles con detalles de reserva.
+    Accesible para usuarios logueados (admin y usuarios normales).
+    """
+    if 'user_id' not in request.session:
+        return redirect('login')
+    
+    # Obtener todos los tours disponibles
+    tours = Tour.objects.all()
+    nombre_usuario = request.session.get('username')
+    
+    contexto = {
+        'tours': tours,
+        'nombre_usuario': nombre_usuario
+    }
+    
+    return render(request, "explorar_toures.html", contexto)
+
+def sobre_nosotros_view(request):
+    """
+    Vista de 'Sobre Nosotros'.
+    Muestra información de la empresa, logros, testimonios y ventajas.
+    Accesible para todos los usuarios (con o sin login para facilitar acceso público).
+    """
+    nombre_usuario = request.session.get('username', None)
+    
+    contexto = {
+        'nombre_usuario': nombre_usuario
+    }
+    
+    return render(request, "sobre_nosotros.html", contexto)
+
+def reservas_view(request):
+    """
+    Vista de Reservas.
+    Permite a los usuarios hacer reservas de tours.
+    Muestra un formulario simple con selección de tour y datos básicos.
+    Guarda la reserva en la base de datos.
+    """
+    if 'user_id' not in request.session:
+        return redirect('login')
+    
+    # Obtener todos los tours disponibles para el selector
+    tours = Tour.objects.all()
+    nombre_usuario = request.session.get('username')
+    
+    if request.method == 'POST':
+        try:
+            # Obtener datos del formulario
+            tour_id = request.POST.get('tour')
+            nombre_cliente = request.POST.get('nombre')
+            email_cliente = request.POST.get('email')
+            telefono_cliente = request.POST.get('telefono')
+            fecha_inicio = request.POST.get('fecha')
+            numero_personas = request.POST.get('personas')
+            observaciones = request.POST.get('observaciones', '')
+            
+            # Obtener tour y usuario
+            tour = Tour.objects.get(id=tour_id)
+            usuario = Practica.objects.get(id=request.session['user_id'])
+            
+            # Crear la reserva
+            reserva = Reserva.objects.create(
+                tour=tour,
+                usuario=usuario,
+                nombre_cliente=nombre_cliente,
+                email_cliente=email_cliente,
+                telefono_cliente=telefono_cliente,
+                fecha_inicio=fecha_inicio,
+                numero_personas=numero_personas,
+                observaciones=observaciones
+            )
+            
+            messages.success(request, f'¡Reserva creada exitosamente para {nombre_cliente}! Tu reserva está pendiente de confirmación.')
+            return redirect('reservas')
+            
+        except Tour.DoesNotExist:
+            messages.error(request, 'El tour seleccionado no existe.')
+        except Exception as e:
+            messages.error(request, f'Error al crear la reserva: {str(e)}')
+    
+    contexto = {
+        'tours': tours,
+        'nombre_usuario': nombre_usuario
+    }
+    
+    return render(request, "reservas.html", contexto)
+
+def reservas_admin_view(request):
+    """
+    Vista de Gestión de Reservas para Administradores.
+    Muestra todas las reservas realizadas por los usuarios.
+    Solo accesible para administradores.
+    """
+    if 'user_id' not in request.session:
+        return redirect('login')
+    
+    # Verificar que sea administrador
+    try:
+        user = Practica.objects.get(id=request.session['user_id'])
+        if not user.is_admin:
+            return redirect('home')
+    except Practica.DoesNotExist:
+        return redirect('login')
+    
+    # Obtener todas las reservas ordenadas por fecha de creación
+    reservas = Reserva.objects.all().select_related('tour', 'usuario')
+    
+    contexto = {
+        'reservas': reservas,
+        'username': request.session.get('username')
+    }
+    
+    return render(request, "reservas_admin.html", contexto)
+

@@ -301,6 +301,29 @@
         {% endfor %}
         {% endif %}
 
+        <!-- Formulario de búsqueda -->
+        <form method="GET" action="{% url 'user_register' %}" style="margin-bottom: 20px;">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" name="q" value="{{ query }}" placeholder="Buscar por usuario, email o nombre"
+                    style="flex: 1; padding: 12px 20px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;">
+                <button type="submit"
+                    style="padding: 12px 30px; background-color: var(--accent-color); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer;">
+                    🔍 Buscar
+                </button>
+                {% if query %}
+                <a href="{% url 'user_register' %}"
+                    style="padding: 12px 20px; background-color: #e0e0e0; color: #333; text-decoration: none; border-radius: 8px; font-weight: 600;">
+                    Limpiar
+                </a>
+                {% endif %}
+            </div>
+            {% if query %}
+            <p style="margin-top: 10px; color: #666; font-size: 0.9rem;">
+                Mostrando resultados para: <strong>"{{ query }}"</strong> ({{ total_usuarios }} encontrados)
+            </p>
+            {% endif %}
+        </form>
+
         <table>
             <thead>
                 <tr>

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nosotros - TRAVELWEB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* === NAVEGACIÓN === */
+        .navegacion {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 80px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .menu-navegacion {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .controles-usuario {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .menu-navegacion a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .menu-navegacion a:hover,
+        .menu-navegacion a.activo {
+            opacity: 0.8;
+        }
+
+        .selector-idioma {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .selector-idioma:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .boton-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        .boton-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* === HERO SECTION === */
+        .hero-sobre-nosotros {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-sobre-nosotros h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-sobre-nosotros p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-weight: 300;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === ESTADÍSTICAS === */
+        .seccion-estadisticas {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+            padding: 80px 80px;
+            background: #f8f9fa;
+        }
+
+        .tarjeta-estadistica {
+            text-align: center;
+        }
+
+        .numero-estadistica {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .texto-estadistica {
+            font-size: 1rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        /* === MISIÓN Y VISIÓN === */
+        .seccion-mision-vision {
+            padding: 80px 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .bloque-info {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .bloque-info h2 {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .bloque-info p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        /* === VENTAJAS === */
+        .seccion-ventajas {
+            padding: 80px 80px;
+            background: #f8f9fa;
+        }
+
+        .titulo-seccion {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            color: #1a1a1a;
+        }
+
+        .grid-ventajas {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .tarjeta-ventaja {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .tarjeta-ventaja:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .imagen-ventaja {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .contenido-ventaja {
+            padding: 30px;
+        }
+
+        .icono-ventaja {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .titulo-ventaja {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .descripcion-ventaja {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* === TESTIMONIOS === */
+        .seccion-testimonios {
+            padding: 80px 80px;
+            background: white;
+        }
+
+        .grid-testimonios {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .tarjeta-testimonio {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .estrellas {
+            color: #ffd700;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .texto-testimonio {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .autor-testimonio {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .avatar-testimonio {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .info-autor {
+            flex: 1;
+        }
+
+        .nombre-autor {
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+
+        .ubicacion-autor {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* === LOGROS === */
+        .seccion-logros {
+            padding: 80px 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .grid-logros {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .tarjeta-logro {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .tarjeta-logro:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(10px);
+        }
+
+        .icono-logro {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .titulo-logro {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .descripcion-logro {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+
+            .navegacion {
+                padding: 20px 30px;
+            }
+
+            .seccion-estadisticas,
+            .seccion-mision-vision,
+            .seccion-ventajas,
+            .seccion-testimonios,
+            .seccion-logros {
+                padding: 60px 30px;
+            }
+
+            .hero-sobre-nosotros h1 {
+                font-size: 2.5rem;
+            }
+
+            .seccion-estadisticas,
+            .grid-ventajas,
+            .grid-testimonios,
+            .grid-logros,
+            .seccion-mision-vision {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HERO -->
+    <section class="hero-sobre-nosotros">
+        <!-- NAVEGACIÓN -->
+        <nav class="navegacion">
+            <div class="logo">TRAVELWEB</div>
+            <ul class="menu-navegacion">
+                <li><a href="{% url 'home' %}">Inicio</a></li>
+                <li><a href="{% url 'reservas' %}">Reservas</a></li>
+                <li><a href="{% url 'sobre_nosotros' %}" class="activo">Sobre Nosotros</a></li>
+            </ul>
+            <div class="controles-usuario">
+                <a href="{% url 'logout' %}" class="boton-logout">Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <!-- Contenido Hero -->
+        <div>
+            <h1>Sobre Nosotros</h1>
+            <p>
+                Somos una agencia de viajes dedicada a crear experiencias inolvidables. Con años de experiencia
+                en el sector turístico, nos comprometemos a ofrecer los mejores destinos y servicios para que cada
+                viaje sea único y memorable.
+            </p>
+        </div>
+    </section>
+
+
+
+    <!-- VENTAJAS -->
+    <section class="seccion-ventajas">
+        <h2 class="titulo-seccion">¿Por Qué Elegirnos?</h2>
+        <div class="grid-ventajas">
+            <div class="tarjeta-ventaja">
+                <img src="https://images.unsplash.com/photo-1556742044-3c52d6e88c62?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Eficiencia" class="imagen-ventaja">
+                <div class="contenido-ventaja">
+                    <div class="icono-ventaja">⚡</div>
+                    <div class="titulo-ventaja">Eficiencia Total</div>
+                    <div class="descripcion-ventaja">
+                        Procesamos tus reservas en minutos. Nuestra plataforma optimizada garantiza una
+                        experiencia rápida y sin complicaciones.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ventaja">
+                <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Confiabilidad" class="imagen-ventaja">
+                <div class="contenido-ventaja">
+                    <div class="icono-ventaja">🛡️</div>
+                    <div class="titulo-ventaja">100% Confiable</div>
+                    <div class="descripcion-ventaja">
+                        Certificados por las principales asociaciones turísticas. Tu seguridad y satisfacción
+                        son nuestra prioridad número uno.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ventaja">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Soporte 24/7" class="imagen-ventaja">
+                <div class="contenido-ventaja">
+                    <div class="icono-ventaja">💬</div>
+                    <div class="titulo-ventaja">Soporte 24/7</div>
+                    <div class="descripcion-ventaja">
+                        Nuestro equipo está disponible en todo momento para asistirte durante tu viaje.
+                        Nunca estarás solo.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ventaja">
+                <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Mejor Precio" class="imagen-ventaja">
+                <div class="contenido-ventaja">
+                    <div class="icono-ventaja">💰</div>
+                    <div class="titulo-ventaja">Mejores Precios</div>
+                    <div class="descripcion-ventaja">
+                        Garantizamos los mejores precios del mercado. Si encuentras una mejor oferta,
+                        la igualamos.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ventaja">
+                <img src="https://images.unsplash.com/photo-1452421822248-d4c2b47f0c81?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Experiencias Únicas" class="imagen-ventaja">
+                <div class="contenido-ventaja">
+                    <div class="icono-ventaja">🌟</div>
+                    <div class="titulo-ventaja">Experiencias Únicas</div>
+                    <div class="descripcion-ventaja">
+                        Acceso exclusivo a destinos y actividades que no encontrarás en ningún otro lugar.
+                        Vive lo extraordinario.
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-ventaja">
+                <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                    alt="Guías Expertos" class="imagen-ventaja">
+                <div class="contenido-ventaja">
+                    <div class="icono-ventaja">🎓</div>
+                    <div class="titulo-ventaja">Guías Expertos</div>
+                    <div class="descripcion-ventaja">
+                        Nuestros guías locales certificados conocen cada rincón de los destinos que visitamos.
+                        Aprende y disfruta.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIOS -->
+    <section class="seccion-testimonios">
+        <h2 class="titulo-seccion">Lo Que Dicen Nuestros Viajeros</h2>
+        <div class="grid-testimonios">
+            <div class="tarjeta-testimonio">
+                <div class="estrellas">★★★★★</div>
+                <p class="texto-testimonio">
+                    "La mejor experiencia de viaje que he tenido. Todo fue perfecto desde el inicio hasta el fin.
+                    El equipo de TravelWeb hizo que cada momento fuera especial."
+                </p>
+                <div class="autor-testimonio">
+                    <img src="https://ui-avatars.com/api/?name=Maria+Rodriguez&background=667eea&color=fff"
+                        class="avatar-testimonio" alt="Maria Rodriguez">
+                    <div class="info-autor">
+                        <div class="nombre-autor">María Rodríguez</div>
+                        <div class="ubicacion-autor">Bogotá, Colombia</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-testimonio">
+                <div class="estrellas">★★★★★</div>
+                <p class="texto-testimonio">
+                    "Increíble servicio y atención al detalle. Los destinos fueron espectaculares y todo estuvo
+                    perfectamente organizado. Definitivamente volveré a reservar con ellos."
+                </p>
+                <div class="autor-testimonio">
+                    <img src="https://ui-avatars.com/api/?name=Carlos+Mendez&background=764ba2&color=fff"
+                        class="avatar-testimonio" alt="Carlos Mendez">
+                    <div class="info-autor">
+                        <div class="nombre-autor">Carlos Méndez</div>
+                        <div class="ubicacion-autor">Medellín, Colombia</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tarjeta-testimonio">
+                <div class="estrellas">★★★★★</div>
+                <p class="texto-testimonio">
+                    "Una agencia confiable y profesional. Nos ayudaron a planificar el viaje de nuestros sueños
+                    y superó todas nuestras expectativas. ¡Altamente recomendados!"
+                </p>
+                <div class="autor-testimonio">
+                    <img src="https://ui-avatars.com/api/?name=Ana+Lopez&background=f093fb&color=fff"
+                        class="avatar-testimonio" alt="Ana Lopez">
+                    <div class="info-autor">
+                        <div class="nombre-autor">Ana López</div>
+                        <div class="ubicacion-autor">Cali, Colombia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOGROS Y RECONOCIMIENTOS -->
+    <section class="seccion-logros">
+        <h2 class="titulo-seccion">Nuestros Logros y Reconocimientos</h2>
+        <div class="grid-logros">
+            <div class="tarjeta-logro">
+                <div class="icono-logro">🏆</div>
+                <div class="titulo-logro">Mejor Agencia de Viajes 2023</div>
+                <div class="descripcion-logro">
+                    Reconocidos por la Asociación Colombiana de Agencias de Viajes como la mejor agencia del año
+                    por nuestra excelencia en servicio al cliente.
+                </div>
+            </div>
+
+            <div class="tarjeta-logro">
+                <div class="icono-logro">⭐</div>
+                <div class="titulo-logro">Certificación Internacional</div>
+                <div class="descripcion-logro">
+                    Certificados por IATA (Asociación Internacional de Transporte Aéreo) garantizando los más
+                    altos estándares de calidad y seguridad.
+                </div>
+            </div>
+
+            <div class="tarjeta-logro">
+                <div class="icono-logro">🌱</div>
+                <div class="titulo-logro">Turismo Sostenible</div>
+                <div class="descripcion-logro">
+                    Premio al Turismo Sostenible 2022 por nuestro compromiso con la conservación ambiental y
+                    el desarrollo de las comunidades locales.
+                </div>
+            </div>
+
+            <div class="tarjeta-logro">
+                <div class="icono-logro">💎</div>
+                <div class="titulo-logro">Excelencia en Servicio</div>
+                <div class="descripcion-logro">
+                    Calificación de 4.9/5 estrellas en plataformas internacionales con más de 5,000 reseñas
+                    verificadas de clientes satisfechos.
+                </div>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>

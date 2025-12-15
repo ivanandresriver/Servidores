@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAVELWEB - Explora el Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* === SECCIÓN HERO === */
+        /* AQUÍ PUEDES CAMBIAR LA URL DE LA IMAGEN DE FONDO */
+        .seccion-hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
+                url('https://s1.1zoom.me/prev/441/440860.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navegación */
+        .navegacion {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 80px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 2px;
+        }
+
+        .menu-navegacion {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .controles-usuario {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .menu-navegacion a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .menu-navegacion a:hover {
+            opacity: 0.8;
+        }
+
+        .selector-idioma {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .selector-idioma:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .boton-logout {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        .boton-logout:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Contenido Hero */
+        .contenido-hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            padding: 0 20px;
+            color: white;
+        }
+
+        .contenido-hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.2;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .contenido-hero p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            max-width: 900px;
+            font-weight: 300;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* === SECCIÓN TOURES === */
+        .seccion-toures {
+            min-height: 100vh;
+            background-color: #f8f9fa;
+            padding: 80px 80px;
+        }
+
+        .titulo-seccion {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            margin-bottom: 50px;
+            font-weight: 600;
+        }
+
+        /* Subsecciones de Tours */
+        .subseccion-tours {
+            margin-bottom: 80px;
+        }
+
+        .subtitulo-tours {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+        }
+
+        .grid-tarjetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        /* Tarjeta de Tour */
+        .tarjeta-tour {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .tarjeta-tour:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .imagen-tour {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .info-tour {
+            padding: 20px 25px;
+        }
+
+        .nombre-destino {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .detalles-tour {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .precio-tour {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2ecc71;
+        }
+
+        .duracion-tour {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .icono-avion {
+            font-size: 1.2rem;
+        }
+
+        /* Mensaje sin tours */
+        .sin-tours {
+            text-align: center;
+            color: #95a5a6;
+            font-size: 1.1rem;
+            padding: 60px 20px;
+        }
+
+        /* === MODAL === */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-contenido {
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-imagen {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .modal-titulo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 20px;
+        }
+
+        .modal-info {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .modal-info-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .modal-info-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        .modal-info-value {
+            color: #333;
+        }
+
+        .modal-descripcion {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .modal-precio {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2ecc71;
+            margin-top: 20px;
+        }
+
+        .boton-cerrar-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .boton-cerrar-modal:hover {
+            background: #f5f5f5;
+            transform: scale(1.1);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* === RESPONSIVE === */
+        @media (max-width: 768px) {
+            .navegacion {
+                padding: 20px 30px;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .menu-navegacion {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .contenido-hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .contenido-hero p {
+                font-size: 1rem;
+            }
+
+            .seccion-toures {
+                padding: 60px 30px;
+            }
+
+            .grid-tarjetas {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-contenido {
+                width: 95%;
+            }
+
+            .modal-titulo {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SECCIÓN HERO -->
+    <section class="seccion-hero" id="inicio">
+        <!-- Navegación -->
+        <nav class="navegacion">
+            <div class="logo">TRAVELWEB</div>
+            <ul class="menu-navegacion">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#toures">Toures</a></li>
+                <li><a href="{% url 'reservas' %}">Reservas</a></li>
+                <li><a href="{% url 'sobre_nosotros' %}">Sobre Nosotros</a></li>
+            </ul>
+            <div class="controles-usuario">
+                <a href="{% url 'logout' %}" class="boton-logout">Cerrar Sesión</a>
+            </div>
+        </nav>
+
+        <!-- Contenido Principal del Hero -->
+        <div class="contenido-hero">
+            <h1>Explora el mundo con una<br>sonrisa</h1>
+            <p>
+                Viajar No Es Solo Cambiar De Lugar. Es Descubrir Nuevas Formas De Ver La Vida, Es
+                Abrir La Mente A Culturas Distintas Y Llenar El Corazón De Recuerdos Que Duran Para
+                Siempre. En Nuestra Página Encontrarás Inspiración, Destinos Únicos Y La
+                Oportunidad De Hacer Realidad Esas Aventuras Con Las Que Siempre Soñaste.
+                Porque Cada Viaje Comienza Con Un Primer Paso, Y Aquí Es Donde Empieza El Tuyo.
+            </p>
+        </div>
+    </section>
+
+    <!-- SECCIÓN TOURES -->
+    <section class="seccion-toures" id="toures">
+
+        <!-- TOP LUGARES -->
+        <div class="subseccion-tours">
+            <h3 class="subtitulo-tours">Top lugares</h3>
+            <div class="grid-tarjetas">
+                {% for tour in tours_lugares %}
+                <div class="tarjeta-tour" data-nombre="{{ tour.nombre }}"
+                    data-imagen="{% if tour.imagen_url %}{{ tour.imagen_url }}{% else %}https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80{% endif %}"
+                    data-precio="{{ tour.precio }}" data-duracion="{{ tour.duracion|default:'7 días de viaje' }}"
+                    data-descripcion="{{ tour.descripcion|default:'Disfruta de una experiencia inolvidable explorando este maravilloso destino.' }}"
+                    data-tipo="Lugar">
+                    {% if tour.imagen_url %}
+                    <img src="{{ tour.imagen_url }}" alt="{{ tour.nombre }}" class="imagen-tour">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="{{ tour.nombre }}" class="imagen-tour">
+                    {% endif %}
+                    <div class="info-tour">
+                        <div class="nombre-destino">{{ tour.nombre }}</div>
+                        <div class="detalles-tour">
+                            {% if tour.precio %}
+                            <div class="precio-tour">{{ tour.precio }}</div>
+                            {% endif %}
+                            <div class="duracion-tour">
+                                <span class="icono-avion">✈️</span>
+                                <span>{{ tour.duracion|default:"7 días de viaje" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="sin-tours">No hay lugares disponibles en este momento.</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- TOP CIUDADES -->
+        <div class="subseccion-tours">
+            <h3 class="subtitulo-tours">Top ciudades</h3>
+            <div class="grid-tarjetas">
+                {% for tour in tours_ciudades %}
+                <div class="tarjeta-tour" data-nombre="{{ tour.nombre }}"
+                    data-imagen="{% if tour.imagen_url %}{{ tour.imagen_url }}{% else %}https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80{% endif %}"
+                    data-precio="{{ tour.precio }}" data-duracion="{{ tour.duracion|default:'6 días de viaje' }}"
+                    data-descripcion="{{ tour.descripcion|default:'Disfruta de una experiencia inolvidable explorando esta maravillosa ciudad.' }}"
+                    data-tipo="Ciudad">
+                    {% if tour.imagen_url %}
+                    <img src="{{ tour.imagen_url }}" alt="{{ tour.nombre }}" class="imagen-tour">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                        alt="{{ tour.nombre }}" class="imagen-tour">
+                    {% endif %}
+                    <div class="info-tour">
+                        <div class="nombre-destino">{{ tour.nombre }}</div>
+                        <div class="detalles-tour">
+                            {% if tour.precio %}
+                            <div class="precio-tour">{{ tour.precio }}</div>
+                            {% endif %}
+                            <div class="duracion-tour">
+                                <span class="icono-avion">✈️</span>
+                                <span>{{ tour.duracion|default:"6 días de viaje" }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="sin-tours">No hay ciudades disponibles en este momento.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL PARA DETALLES DEL TOUR -->
+    <div class="modal" id="modalTour">
+        <div class="modal-contenido">
+            <button class="boton-cerrar-modal" onclick="cerrarModal()">×</button>
+            <img id="modalImagen" src="" alt="Tour" class="modal-imagen">
+            <div class="modal-body">
+                <h2 id="modalTitulo" class="modal-titulo"></h2>
+                <div class="modal-info">
+                    <div class="modal-info-item">
+                        <span class="modal-info-label">✈️ Duración:</span>
+                        <span id="modalDuracion" class="modal-info-value"></span>
+                    </div>
+                    <div class="modal-info-item">
+                        <span class="modal-info-label">📍 Tipo:</span>
+                        <span id="modalTipo" class="modal-info-value"></span>
+                    </div>
+                </div>
+                <div class="modal-descripcion" id="modalDescripcion"></div>
+                <div class="modal-precio" id="modalPrecio"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth scroll para navegación
+        document.querySelectorAll('a[href^="#"]').forEach(enlace => {
+            enlace.addEventListener('click', function (evento) {
+                evento.preventDefault();
+                const idDestino = this.getAttribute('href');
+                const elementoDestino = document.querySelector(idDestino);
+
+                if (elementoDestino) {
+                    elementoDestino.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Función para abrir modal con información del tour
+        function abrirModal(nombre, imagen, precio, duracion, descripcion, tipo) {
+            document.getElementById('modalTitulo').textContent = nombre;
+            document.getElementById('modalImagen').src = imagen;
+            document.getElementById('modalPrecio').textContent = precio;
+            document.getElementById('modalDuracion').textContent = duracion || '7 días de viaje';
+            document.getElementById('modalDescripcion').textContent = descripcion || 'Disfruta de una experiencia inolvidable explorando este maravilloso destino. Incluye hospedaje, tours guiados y actividades exclusivas.';
+            document.getElementById('modalTipo').textContent = tipo;
+            document.getElementById('modalTour').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevenir scroll cuando modal está abierto
+        }
+
+        // Función para cerrar modal
+        function cerrarModal() {
+            document.getElementById('modalTour').classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restaurar scroll
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        document.getElementById('modalTour').addEventListener('click', function (e) {
+            if (e.target === this) {
+                cerrarModal();
+            }
+        });
+
+        // Cerrar modal con tecla Escape
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                cerrarModal();
+            }
+        });
+
+        // Agregar event listeners a todas las tarjetas de tour
+        document.addEventListener('DOMContentLoaded', function () {
+            const tarjetas = document.querySelectorAll('.tarjeta-tour[data-nombre]');
+            tarjetas.forEach(tarjeta => {
+                tarjeta.addEventListener('click', function () {
+                    const nombre = this.getAttribute('data-nombre');
+                    const imagen = this.getAttribute('data-imagen');
+                    const precio = this.getAttribute('data-precio');
+                    const duracion = this.getAttribute('data-duracion');
+                    const descripcion = this.getAttribute('data-descripcion');
+                    const tipo = this.getAttribute('data-tipo');
+                    abrirModal(nombre, imagen, precio, duracion, descripcion, tipo);
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

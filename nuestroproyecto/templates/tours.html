@@ -173,8 +173,15 @@
 
     <div class="content">
         <div class="header">
-            <div class="search-bar"> <span style="font-size: 1.1rem; color: #888;">🔍</span> <input type="text"
-                    placeholder="Buscar Toures"></div>
+            <form method="GET" action="{% url 'tours' %}" class="search-bar">
+                <span style="font-size: 1.1rem; color: #888;">🔍</span>
+                <input type="text" name="q" value="{{ query }}" placeholder="Buscar Tours">
+                <button type="submit"
+                    style="background: none; border: none; cursor: pointer; color: var(--accent-color); font-weight: 600; padding: 0 10px;">Buscar</button>
+                {% if query %}
+                <a href="{% url 'tours' %}" style="color: #999; text-decoration: none; padding: 0 10px;">✕</a>
+                {% endif %}
+            </form>
             <!-- Profile Link -->
             <a href="{% url 'perfil' %}" style="text-decoration:none; color:inherit;">
                 <div class="user-profile">

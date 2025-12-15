@@ -30,6 +30,7 @@ class Tour(models.Model):
     descripcion = models.TextField()
     imagen_url = models.URLField(max_length=500, blank=True, null=True)
     duracion = models.CharField(max_length=50) # Ej: "5 Días"
+    precio = models.CharField(max_length=20, blank=True, null=True, default="7.5M") # Ej: "7.5M", "10.5M"
     categoria = models.CharField(
         max_length=10,
         choices=[('ciudad', 'Ciudad'), ('lugar', 'Lugar')],
@@ -38,3 +39,40 @@ class Tour(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Reserva(models.Model):
+    """
+    Modelo para las Reservas de Tours.
+    Almacena la información del usuario que hizo la reserva.
+    Se vincula con el Tour y el Usuario (Practica).
+    """
+    tour = models.ForeignKey(Tour, on_delete=models.CASCADE, related_name='reservas')
+    usuario = models.ForeignKey(Practica, on_delete=models.CASCADE, related_name='reservas', null=True, blank=True)
+    
+    # Información del cliente
+    nombre_cliente = models.CharField(max_length=200)
+    email_cliente = models.EmailField(max_length=254)
+    telefono_cliente = models.CharField(max_length=20)
+    
+    # Detalles de la reserva
+    fecha_inicio = models.DateField()
+    numero_personas = models.IntegerField(default=1)
+    observaciones = models.TextField(blank=True, null=True)
+    
+    # Metadata
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(
+        max_length=20,
+        choices=[
+            ('pendiente', 'Pendiente'),
+            ('confirmada', 'Confirmada'),
+            ('cancelada', 'Cancelada'),
+        ],
+        default='pendiente'
+    )
+    
+    def __str__(self):
+        return f"Reserva de {self.nombre_cliente} - {self.tour.nombre}"
+    
+    class Meta:
+        ordering = ['-fecha_creacion']

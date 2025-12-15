@@ -1,0 +1,9 @@
+.git
+.gitignore
+.dockerignore
+.env
+__pycache__
+*.pyc
+/venv
+/static_collected # Si lo quieres fuera de la imagen
+/media # Si lo quieres fuera de la imagen

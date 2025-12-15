@@ -14,7 +14,8 @@ urlpatterns = [
     path('dashboard/', views.dashboard, name='dashboard'), # Inicio para administradores
     
     # --- Gestión de Tours ---
-    path('tours/', views.tours_view, name='tours'), # Ver lista de tours
+    path('tours/', views.tours_view, name='tours'), # Ver lista de tours (CRUD para admin)
+    path('explorar-toures/', views.explorar_toures_view, name='explorar_toures'), # Vista de usuario para explorar tours
     path('tours/crear/', views.crear_tour, name='crear_tour'), # Formulario nuevo tour
     path('tours/editar/<int:pk>/', views.editar_tour, name='editar_tour'), # Editar tour existente (usa ID)
     path('tours/eliminar/<int:pk>/', views.eliminar_tour, name='eliminar_tour'), # Eliminar tour (usa ID)
@@ -24,6 +25,9 @@ urlpatterns = [
     path('usuario/editar/<int:user_id>/', views.editar_usuario, name='editar_usuario'), # Editar otro usuario
     path('configuracion/', views.configuracion_view, name='configuracion'), # Ajustes del sistema
     path('perfil/', views.perfil_view, name='perfil'), # Editar mi propio perfil
+    path('sobre-nosotros/', views.sobre_nosotros_view, name='sobre_nosotros'), # Página sobre nosotros
+    path('reservas/', views.reservas_view, name='reservas'), # Formulario de reservas
+    path('reservas-admin/', views.reservas_admin_view, name='reservas_admin'), # Gestión de reservas (Admin)
     
     # --- Vistas Simples / Legacy ---
     path('saludo/', views.saludo, name='saludo'),

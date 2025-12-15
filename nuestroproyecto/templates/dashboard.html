@@ -425,6 +425,12 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{% url 'reservas_admin' %}" class="nav-link">
+                    <span class="nav-icon">📋</span>
+                    <span>Reservas</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="#" class="nav-link">
                     <span class="nav-icon">👤</span>
                     <span>Personas</span>
@@ -448,10 +454,12 @@
 
         <!-- Header -->
         <div class="header-section">
-            <div class="search-bar">
+            <form method="GET" action="{% url 'dashboard' %}" class="search-bar">
                 <span style="font-size: 1.1rem; color: #888;">🔍</span>
-                <input type="text" placeholder="Buscar personas, reservas">
-            </div>
+                <input type="text" name="buscar" placeholder="Buscar tours por nombre"
+                    value="{{ search_query|default:'' }}">
+                <button type="submit" style="display:none"></button>
+            </form>
             <!-- Profile Link -->
             <a href="{% url 'perfil' %}" style="text-decoration:none; color:inherit;">
                 <div class="user-profile">
