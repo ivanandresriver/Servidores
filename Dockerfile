@@ -27,4 +27,4 @@ EXPOSE 8000
 
 # Comando para iniciar la aplicación (usa Gunicorn en producción)
 # Reemplaza 'tu_proyecto.wsgi' con la ruta real a tu archivo WSGI
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "tu_proyecto.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "nuestroproyecto.wsgi:application"]
