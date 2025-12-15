@@ -69,11 +69,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'nuestroproyecto.wsgi.application'
 
-# Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('POSTGRES_DB', 'nombre_db_por_defecto'), # Variable de tu docker-compose
+        'USER': os.environ.get('POSTGRES_USER', 'user_por_defecto'), # Variable de tu docker-compose
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'pass_por_defecto'), # Variable de tu docker-compose
+        'HOST': 'db', # ¡IMPORTANTE! Este es el nombre del servicio en tu docker-compose.yml
+        'PORT': os.environ.get('POSTGRES_PORT', 5432),
     }
 }
 
