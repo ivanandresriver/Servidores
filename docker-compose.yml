@@ -1,25 +1,18 @@
-version: '3.8'
-
 services:
   # 1. Contenedor de Base de Datos (PostgreSQL)
   db:
     image: postgres:15-alpine
-    container_name: proyecto_db
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-django_db}
       POSTGRES_USER: ${POSTGRES_USER:-django_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-secure_password}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    networks:
-      - app_network
     restart: always
-    # No exponemos puertos: la BD solo es accesible internamente
 
   # 2. Contenedor de la Aplicación Django
   app:
     build: .
-    container_name: proyecto_app
     environment:
       - SECRET_KEY=${SECRET_KEY}
       - DEBUG=${DEBUG:-False}
@@ -35,33 +28,23 @@ services:
       - media_volume:/app/media/
     depends_on:
       - db
-    networks:
-      - app_network
     restart: always
     expose:
-      - "8000"  # Expone el puerto solo internamente
+      - "8000"
 
   # 3. Contenedor Proxy Reverso (Nginx)
   nginx:
     image: nginx:alpine
-    container_name: proyecto_nginx
-    ports:
-      - "80:80"
-      - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
       - static_volume:/app/staticfiles/:ro
       - media_volume:/app/media/:ro
-      - ./ssl:/etc/nginx/ssl:ro  # Para certificados SSL (opcional)
     depends_on:
       - app
-    networks:
-      - app_network
     restart: always
-
-networks:
-  app_network:
-    driver: bridge
+    ports:
+      - "80:80"
+      - "443:443"
 
 volumes:
   postgres_data:
