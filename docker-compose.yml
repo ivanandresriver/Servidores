@@ -30,7 +30,7 @@ services:
       - db
     restart: always
     expose:
-      - "80"
+      - "8000"
 
 volumes:
   postgres_data:
