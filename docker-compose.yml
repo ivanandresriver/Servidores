@@ -30,7 +30,7 @@ services:
       - db
     restart: always
     expose:
-      - "8080:8000"
+      - "8080:80"
 
 volumes:
   postgres_data:
