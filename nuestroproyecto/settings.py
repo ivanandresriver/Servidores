@@ -23,7 +23,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Add your Azure domain to ALLOWED_HOSTS
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(',')
 
 # CSRF Trusted Origins for Azure
 CSRF_TRUSTED_ORIGINS = [os.getenv("DOMINIO")]
