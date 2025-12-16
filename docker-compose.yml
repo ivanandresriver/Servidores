@@ -29,8 +29,8 @@ services:
     depends_on:
       - db
     restart: always
-    expose:
-      - "8000"
+    ports:
+      - "8000:8000"
 
 volumes:
   postgres_data:
