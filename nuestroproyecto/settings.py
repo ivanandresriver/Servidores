@@ -76,13 +76,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'nuestroproyecto.wsgi.application'
 
 DATABASES = {
-    'default': {
+'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('POSTGRES_DB', 'django_db'),
         'USER': os.environ.get('POSTGRES_USER', 'django_user'),
         'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'secure_password'),
-        # El HOST DEBE ser el nombre del servicio de la BD en docker-compose
-        'HOST': 'db', 
+        # CORRECCIÓN AQUÍ: Leemos el host de las variables de entorno
+        'HOST': os.environ.get('POSTGRES_HOST', 'db'), 
         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
