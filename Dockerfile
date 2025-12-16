@@ -1,30 +1,29 @@
-# Usa una imagen base ligera de Python
-FROM python:3.11-alpine
+FROM python:3.13-slim
 
-# Establece variables de entorno para que Python no escriba .pyc en el disco
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Establecer variables de entorno
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# Define el directorio de trabajo dentro del contenedor
-WORKDIR /usr/src/app
+# Establecer el directorio de trabajo
+WORKDIR /app
 
-# Instala dependencias del sistema operativo (si son necesarias para tu aplicación o dependencias)
-# Ejemplo: si usas Pillow o PostgreSQL cliente:
-# RUN apk add --no-cache gcc musl-dev postgresql-dev
+# Instalar dependencias del sistema
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copia el archivo de requerimientos e instala dependencias ANTES del código para aprovechar el cache de Docker
-COPY requirements.txt /usr/src/app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Copiar requirements.txt e instalar dependencias Python
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copia todo el código fuente del proyecto
-COPY . /usr/src/app/
+# Copiar el código de la aplicación
+COPY . .
 
-# Ejecuta comandos de Django (asegúrate de que Django ya esté configurado para base de datos)
-RUN python manage.py collectstatic --no-input
+# Recolectar archivos estáticos
+RUN python manage.py collectstatic --noinput --clear
 
-# Exponer el puerto donde se ejecutará Gunicorn (el servidor de producción para Django)
+# Exponer puerto
 EXPOSE 8000
 
-# Comando para iniciar la aplicación (usa Gunicorn en producción)
-# Reemplaza 'tu_proyecto.wsgi' con la ruta real a tu archivo WSGI
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "nuestroproyecto.wsgi:application"]
+# Ejecutar migraciones e iniciar gunicorn
+CMD ["sh", "-c", "python manage.py migrate && gunicorn nuestroproyecto.wsgi:application --bind 0.0.0.0:8000 --workers 3"]
