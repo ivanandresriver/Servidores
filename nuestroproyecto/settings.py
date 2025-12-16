@@ -72,11 +72,12 @@ WSGI_APPLICATION = 'nuestroproyecto.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_DB', 'nombre_db_por_defecto'), # Variable de tu docker-compose
-        'USER': os.environ.get('POSTGRES_USER', 'user_por_defecto'), # Variable de tu docker-compose
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'pass_por_defecto'), # Variable de tu docker-compose
-        'HOST': 'db', # ¡IMPORTANTE! Este es el nombre del servicio en tu docker-compose.yml
-        'PORT': os.environ.get('POSTGRES_PORT', 5432),
+        'NAME': os.environ.get('POSTGRES_DB', 'django_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'django_user'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'secure_password'),
+        # El HOST DEBE ser el nombre del servicio de la BD en docker-compose
+        'HOST': 'db', 
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
 
