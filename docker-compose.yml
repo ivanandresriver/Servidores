@@ -10,7 +10,7 @@ services:
       POSTGRES_USER: django_user
       POSTGRES_PASSWORD: secure_password
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_1:/var/lib/postgresql/data
     networks:
       - app_net
 
@@ -39,7 +39,7 @@ services:
       - app_net
 
 volumes:
-  postgres_data:
+  postgres_data_1:
   static_volume:
   media_volume:
 
