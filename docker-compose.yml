@@ -1,6 +1,9 @@
+version: "3.9"
+
 services:
   db:
     image: postgres:15-alpine
+    container_name: django_db
     restart: always
     environment:
       POSTGRES_DB: django_db
@@ -11,6 +14,7 @@ services:
 
   app:
     build: .
+    container_name: django_app
     restart: always
     depends_on:
       - db
@@ -19,11 +23,13 @@ services:
     environment:
       SECRET_KEY: super_secret_key
       DEBUG: "False"
+
       POSTGRES_DB: django_db
       POSTGRES_USER: django_user
       POSTGRES_PASSWORD: secure_password
       POSTGRES_HOST: db
       POSTGRES_PORT: "5432"
+
       DOMINIO: localhost
     volumes:
       - static_volume:/app/staticfiles
