@@ -29,7 +29,7 @@ ALLOWED_HOSTS = ["*"]
 # CSRF Trusted Origins for Azure
 dominio = os.getenv("DOMINIO", "localhost")
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{dominio}",
+    f"https://{servidores-proyecto.dgzncm.easypanel.host}",
     f"http://{dominio}",
     f"https://www.{dominio}",
     f"http://www.{dominio}",
