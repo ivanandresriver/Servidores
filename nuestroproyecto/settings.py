@@ -24,16 +24,32 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 # Add your Azure domain to ALLOWED_HOSTS
 #ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(',')
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "servidores-proyecto.dgzncm.easypanel.host",
+    "localhost",
+    "127.0.0.1",
+]
+
+
 
 # CSRF Trusted Origins for Azure
 dominio = os.getenv("DOMINIO", "localhost")
 CSRF_TRUSTED_ORIGINS = [
-    f"https://{servidores-proyecto.dgzncm.easypanel.host}",
+    f"https://servidores-proyecto.dgzncm.easypanel.host",
     f"http://{dominio}",
     f"https://www.{dominio}",
     f"http://www.{dominio}",
 ]
+# === EasyPanel / Docker / Proxy HTTPS ===
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+USE_X_FORWARDED_HOST = True
+
+# === Cookies (evita bloqueos CSRF en HTTPS) ===
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+
 
 # Application definition
 INSTALLED_APPS = [
